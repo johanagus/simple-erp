@@ -1,21 +1,22 @@
 package config
 
 import (
-    "github.com/joho/godotenv"
-    "log"
-    "os"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func LoadEnv() {
-    if err := godotenv.Load(); err != nil {
-        log.Println("No .env file found")
-    }
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
 }
 
 func GetEnv(key, fallback string) string {
-    value := os.Getenv(key)
-    if value == "" {
-        return fallback
-    }
-    return value
+	value := os.Getenv(key)
+	if value == "" {
+		return fallback
+	}
+	return value
 }
