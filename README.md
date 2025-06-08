@@ -25,6 +25,7 @@ simple-erp/
 │   ├── service/            # Logika bisnis
 │   ├── repository/         # Implementasi data access
 │   └── handler/            # HTTP handler (controller)
+│   └── dto/                # Request/Response model (API-safe)
 ├── pkg/                    # Library atau utilitas umum
 ├── migrations/             # Skrip migrasi database
 ├── Dockerfile              # Docker image build
@@ -85,6 +86,7 @@ Gunakan Postman/Insomnia untuk eksplorasi endpoint. (Collection tersedia di fold
 ## 📈 Rencana Pengembangan
 
 - [x] Modul Autentikasi
+- [x] Modul Users
 - [ ] Modul Produk & Inventaris
 - [ ] Modul Transaksi
 - [ ] Laporan PDF/Excel
