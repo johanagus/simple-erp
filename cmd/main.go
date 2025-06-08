@@ -2,16 +2,38 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/golang-jwt/jwt/v5"
 	"github.com/johanagus/simple-erp/config"
+	"github.com/johanagus/simple-erp/internal/handler"
+	"github.com/johanagus/simple-erp/internal/middleware"
+	"github.com/johanagus/simple-erp/internal/repository"
+	"github.com/johanagus/simple-erp/internal/routes"
+	"github.com/johanagus/simple-erp/internal/service"
 )
 
 func main() {
 
-	app := fiber.New()
-	config.InitDB()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: middleware.ErrorHandler,
+	})
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Wellcome to Fiber App")
+	DB := config.InitDB()
+
+	// Init handler, service, repo...
+	authRepo := repository.NewAuthRepository(DB)
+	authService := service.NewAuthService(authRepo)
+	authHandler := handler.NewAuthHandler(authService)
+
+	userRepo := repository.NewUserRepository(DB)
+	userService := service.NewUserService(userRepo)
+	userHandler := handler.NewUserHandler(userService)
+
+	app.Use(middleware.Logger())
+
+	// Register routes
+	routes.RegisterRoutes(app, routes.RouteConfig{
+		AuthHandler: authHandler,
+		UserHandler: userHandler,
 	})
 
 	app.Listen(":8000")
