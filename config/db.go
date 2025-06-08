@@ -5,13 +5,12 @@ import (
 	"log"
 	"time"
 
-	"github.com/johanagus/simple-erp/internal/domain"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-func InitDB() {
+func InitDB() *gorm.DB {
 
 	LoadEnv() // Load ENV File
 
@@ -38,20 +37,20 @@ func InitDB() {
 		log.Fatalf("Gagal mendapatkan instance SQL DB: %v", err)
 	}
 
-	DB.AutoMigrate(
-		&domain.Category{},
-		&domain.User{},
-		&domain.Customer{},
-		&domain.Sales{},
-		&domain.Product{},
-		&domain.Inventory{},
-		&domain.SalesItem{},
-		&domain.SalesOrder{},
-		&domain.SalesOrderItem{},
-		&domain.SalesPayment{},
-		&domain.Supplier{},
-		&domain.Warehouse{},
-	)
+	// DB.AutoMigrate(
+	// 	&domain.Category{},
+	// 	&domain.User{},
+	// 	&domain.Customer{},
+	// 	&domain.Sales{},
+	// 	&domain.Product{},
+	// 	&domain.Inventory{},
+	// 	&domain.SalesItem{},
+	// 	&domain.SalesOrder{},
+	// 	&domain.SalesOrderItem{},
+	// 	&domain.SalesPayment{},
+	// 	&domain.Supplier{},
+	// 	&domain.Warehouse{},
+	// )
 
 	// konfigurasi koneksi pool
 	sqlDB.SetMaxOpenConns(10)
@@ -59,4 +58,5 @@ func InitDB() {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	log.Println("Berhasil koneksi ke database")
+	return DB
 }
