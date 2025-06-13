@@ -28,12 +28,22 @@ func main() {
 	userService := service.NewUserService(userRepo)
 	userHandler := handler.NewUserHandler(userService)
 
+	productRepo := repository.NewProductRepository(DB)
+	productService := service.NewProductService(productRepo)
+	productHandler := handler.NewProductHandler(productService)
+
+	warehouseRepo := repository.NewWarehouseRepository(DB)
+	warehouseService := service.NewWarehouseService(warehouseRepo)
+	warehouseHandler := handler.NewWarehouseHandler(warehouseService)
+
 	app.Use(middleware.Logger())
 
 	// Register routes
 	routes.RegisterRoutes(app, routes.RouteConfig{
-		AuthHandler: authHandler,
-		UserHandler: userHandler,
+		AuthHandler:      authHandler,
+		UserHandler:      userHandler,
+		ProductHandler:   productHandler,
+		WarehouseHandler: warehouseHandler,
 	})
 
 	app.Listen(":8000")
