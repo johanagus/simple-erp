@@ -8,9 +8,10 @@ import (
 )
 
 type RouteConfig struct {
-	AuthHandler *handler.AuthHandler
-	UserHandler *handler.UserHandler
-	// Tambah handler lain di sini
+	AuthHandler      *handler.AuthHandler
+	UserHandler      *handler.UserHandler
+	ProductHandler   *handler.ProductHandler
+	WarehouseHandler *handler.WarehouseHandler
 }
 
 func RegisterRoutes(app *fiber.App, cfg RouteConfig) {
@@ -24,5 +25,7 @@ func RegisterRoutes(app *fiber.App, cfg RouteConfig) {
 	protected.Use(middleware.JWTProtected())
 
 	RegisterUserRoutes(protected, cfg.UserHandler)
+	RegisterProductRoutes(protected, cfg.ProductHandler)
+	RegisterWarehouseRoutes(protected, cfg.WarehouseHandler)
 
 }
