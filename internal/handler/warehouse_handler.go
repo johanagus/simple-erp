@@ -3,6 +3,7 @@ package handler
 import (
 	"strconv"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/johanagus/simple-erp/internal/domain"
 	"github.com/johanagus/simple-erp/internal/service"
@@ -29,6 +30,7 @@ func (h *WarehouseHandler) FindAllWarehouses(c *fiber.Ctx) error {
 
 	return response.Success(c, fiber.StatusOK, "warehouses retrieved successfully", warehouses)
 }
+
 func (h *WarehouseHandler) FindWarehouseByID(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
@@ -42,10 +44,20 @@ func (h *WarehouseHandler) FindWarehouseByID(c *fiber.Ctx) error {
 
 	return response.Success(c, fiber.StatusOK, "warehouse retrieved successfully", warehouse)
 }
+
 func (h *WarehouseHandler) CreateWarehouse(c *fiber.Ctx) error {
 	warehouse := new(domain.Warehouse)
 	if err := c.BodyParser(warehouse); err != nil {
-		return response.Error(c, fiber.StatusBadRequest, "invalid request body", err)
+		return response.Error(c, fiber.StatusBadRequest, "invalid request body", err.Error())
+	}
+
+	validate := validator.New()
+	if err := validate.Struct(warehouse); err != nil {
+		var validationErrors []string
+		for _, fieldErr := range err.(validator.ValidationErrors) {
+			validationErrors = append(validationErrors, fieldErr.Field()+": "+fieldErr.ActualTag())
+		}
+		return response.Error(c, fiber.StatusBadRequest, "validation failed", validationErrors)
 	}
 
 	id, err := h.Service.CreateWarehouse(warehouse)
@@ -55,6 +67,7 @@ func (h *WarehouseHandler) CreateWarehouse(c *fiber.Ctx) error {
 
 	return response.Success(c, fiber.StatusCreated, "warehouse created successfully", fiber.Map{"id": id})
 }
+
 func (h *WarehouseHandler) UpdateWarehouse(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
