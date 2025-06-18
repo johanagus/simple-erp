@@ -10,6 +10,8 @@ type User struct {
 	Lastname  string    `gorm:"type:varchar(10)" json:"lastname"`
 	Password  string    `gorm:"type:varchar(255)" json:"password,omitempty"`
 	CompanyId int       `json:"company_id"`
-	CreatedAt time.Time `json:"-"` // tidak tampilkan di respon api
-	UpdatedAt time.Time `json:"-"` // tidak tampilkan di respon api
+	RoleID    int       `json:"role_id"`
+	Roles     []string  `gorm:"-" json:"roles"` // tidak di simpan di database
+	CreatedAt time.Time `json:"-"`              // tidak tampilkan di respon api
+	UpdatedAt time.Time `json:"-"`              // tidak tampilkan di respon api
 }

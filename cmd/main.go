@@ -21,7 +21,8 @@ func main() {
 
 	// Init handler, service, repo...
 	authRepo := repository.NewAuthRepository(DB)
-	authService := service.NewAuthService(authRepo)
+	roleRepo := repository.NewRoleRepository(DB)
+	authService := service.NewAuthService(authRepo, roleRepo)
 	authHandler := handler.NewAuthHandler(authService)
 
 	userRepo := repository.NewUserRepository(DB)

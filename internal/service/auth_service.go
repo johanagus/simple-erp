@@ -13,24 +13,30 @@ type AuthService interface {
 }
 
 type authServiceImpl struct {
-	repo repository.AuthRespository
+	authRepo repository.AuthRespository
+	roleRepo repository.RoleRepository
 }
 
-func NewAuthService(repo repository.AuthRespository) AuthService {
-	return &authServiceImpl{repo}
+func NewAuthService(repo repository.AuthRespository, roleRepo repository.RoleRepository) AuthService {
+	return &authServiceImpl{authRepo: repo, roleRepo: roleRepo}
 }
 
 func (s *authServiceImpl) Authenticate(email, password string) (*domain.User, error) {
-	user, err := s.repo.FindByEmail(email)
-
+	user, err := s.authRepo.FindByEmail(email)
 	if err != nil {
 		return nil, errors.New("email tidak ditemukan")
+	}
+
+	roles, err := s.roleRepo.GetRolesByID(user.RoleID)
+	if err != nil {
+		return nil, errors.New("role tidak ditemukan")
 	}
 
 	if !utils.CheckPasswordHash(password, user.Password) {
 		return nil, errors.New("password salah")
 	}
 
+	user.Roles = roles
 	return user, nil
 
 }

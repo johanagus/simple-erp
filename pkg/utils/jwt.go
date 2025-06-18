@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"time"
 
 	"strconv"
@@ -10,15 +9,11 @@ import (
 	"github.com/johanagus/simple-erp/config"
 )
 
-var (
-	jwtSecret        = []byte(config.GetEnv("JWT_SECRET", "secret"))
-	jwtRefreshSecret = []byte(config.GetEnv("JWT_REFRESH_SECRET", "secret"))
-)
-
-func GenerateAccessToken(UserID int, Email string) (string, error) {
+func GenerateAccessToken(UserID int, Email string, roles []string) (string, error) {
 	claims := jwt.MapClaims{
 		"id":    UserID,
 		"email": Email,
+		"roles": roles,
 		"exp": func() int64 {
 			expStr := config.GetEnv("EXPIRED_JWT_TOKEN", "24") // default expired access token 24 jam
 			expInt := 24
@@ -28,8 +23,6 @@ func GenerateAccessToken(UserID int, Email string) (string, error) {
 			return time.Now().Add(time.Hour * time.Duration(expInt)).Unix()
 		}(),
 	}
-
-	fmt.Println(config.GetEnv("JWT_SECRET", "secret"))
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(config.GetEnv("JWT_SECRET", "secret")))
@@ -54,7 +47,7 @@ func GenerateRefreshToken(UserID int) (string, error) {
 
 func ValidateRefreshToken(tokenString string) (*jwt.Token, jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return jwtRefreshSecret, nil
+		return []byte(config.GetEnv("JWT_REFRESH_SECRET", "secret")), nil
 	})
 
 	if err != nil || !token.Valid {

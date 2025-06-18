@@ -30,7 +30,7 @@ func (h *AuthHandler) Signin(c *fiber.Ctx) error {
 		return response.Error(c, fiber.StatusUnauthorized, "Authentikasi gagal", err.Error())
 	}
 
-	token, err := utils.GenerateAccessToken(int(user.ID), user.Email)
+	token, err := utils.GenerateAccessToken(int(user.ID), user.Email, user.Roles)
 	if err != nil {
 		return response.Error(c, 500, "Gagal membuat token", err.Error())
 	}
@@ -48,6 +48,7 @@ func (h *AuthHandler) Signin(c *fiber.Ctx) error {
 			"firstname": user.Firstname,
 			"lastname":  user.Lastname,
 			"email":     user.Email,
+			"roles":     user.Roles,
 		},
 	})
 }

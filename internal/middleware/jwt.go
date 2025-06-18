@@ -35,6 +35,7 @@ func JWTProtected() fiber.Handler {
 		// Simpan user info ke context, bisa dipakai di handler
 		c.Locals("id", claims["id"])
 		c.Locals("email", claims["email"])
+		c.Locals("roles", claims["roles"])
 
 		return c.Next()
 	}
