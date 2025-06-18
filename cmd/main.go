@@ -19,6 +19,8 @@ func main() {
 
 	DB := config.InitDB()
 
+	config.SeedData(DB) // Seed initial data
+
 	// Init handler, service, repo...
 	authRepo := repository.NewAuthRepository(DB)
 	roleRepo := repository.NewRoleRepository(DB)

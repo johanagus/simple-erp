@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/johanagus/simple-erp/internal/domain"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -37,23 +38,23 @@ func InitDB() *gorm.DB {
 		log.Fatalf("Gagal mendapatkan instance SQL DB: %v", err)
 	}
 
-	// DB.AutoMigrate(
-	// 	&domain.Category{},
-	// 	&domain.User{},
-	// 	&domain.Customer{},
-	// 	&domain.Sales{},
-	// 	&domain.Product{},
-	// 	&domain.Inventory{},
-	// 	&domain.SalesItem{},
-	// 	&domain.SalesOrder{},
-	// 	&domain.SalesOrderItem{},
-	// 	&domain.SalesPayment{},
-	// 	&domain.Supplier{},
-	// 	&domain.Warehouse{},
-	// 	&domain.Module{},
-	// 	&domain.Role{},
-	// 	&domain.ModuleRole{},
-	// )
+	DB.AutoMigrate(
+		&domain.Category{},
+		&domain.User{},
+		&domain.Customer{},
+		&domain.Sales{},
+		&domain.Product{},
+		&domain.Inventory{},
+		&domain.SalesItem{},
+		&domain.SalesOrder{},
+		&domain.SalesOrderItem{},
+		&domain.SalesPayment{},
+		&domain.Supplier{},
+		&domain.Warehouse{},
+		&domain.Module{},
+		&domain.Role{},
+		&domain.ModuleRole{},
+	)
 
 	// konfigurasi koneksi pool
 	sqlDB.SetMaxOpenConns(10)
