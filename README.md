@@ -59,6 +59,16 @@ cp .env.example .env
 docker-compose up --build
 ```
 
+## Default Login
+
+Saat pertama kali aplikasi dijalankan, data user dummy akan otomatis terbuat melalui proses seeder.  
+Gunakan akun berikut untuk login ke sistem:
+
+- **Email:** admin@simple.erp
+- **Password:** admin123
+
+Anda dapat mengubah data ini di file seeder sesuai kebutuhan.
+
 ## 🧪 Endpoint API
 
 ```http
