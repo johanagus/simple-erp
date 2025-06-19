@@ -91,7 +91,9 @@ POST /api/v1/product
 
 ```
 
-Gunakan Postman/Insomnia untuk eksplorasi endpoint. (Collection tersedia di folder `docs/`)
+Gunakan link Postman berikut untuk eksplorasi endpoint. 
+https://www.postman.com/johanagus/workspace/simple-pos/folder/9335228-1083d586-aa3d-4cdb-beb7-08461ed4ad2d?action=share&creator=9335228&ctx=documentation&active-environment=9335228-6f10e50b-a00a-452d-a526-083e27f22e95
+
 
 ## 📈 Rencana Pengembangan
 
