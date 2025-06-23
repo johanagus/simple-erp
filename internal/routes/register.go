@@ -12,6 +12,7 @@ type RouteConfig struct {
 	UserHandler      *handler.UserHandler
 	ProductHandler   *handler.ProductHandler
 	WarehouseHandler *handler.WarehouseHandler
+	SupplierHandler  *handler.SupplierHandler
 }
 
 func RegisterRoutes(app *fiber.App, cfg RouteConfig) {
@@ -27,5 +28,6 @@ func RegisterRoutes(app *fiber.App, cfg RouteConfig) {
 	RegisterUserRoutes(protected, cfg.UserHandler)
 	RegisterProductRoutes(protected, cfg.ProductHandler)
 	RegisterWarehouseRoutes(protected, cfg.WarehouseHandler)
+	RegisterSupplierRoutes(protected, cfg.SupplierHandler)
 
 }

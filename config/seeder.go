@@ -51,6 +51,10 @@ func SeedData(db *gorm.DB) {
 		{ID: 30, Name: "create_warehouse", Description: "Create Warehouse"},
 		{ID: 31, Name: "update_warehouse", Description: "Update Warehouse"},
 		{ID: 32, Name: "delete_warehouse", Description: "Delete Warehouse"},
+		{ID: 33, Name: "get_supplier", Description: "Get Supplier"},
+		{ID: 34, Name: "create_supplier", Description: "Create Supplier"},
+		{ID: 35, Name: "update_supplier", Description: "Update Supplier"},
+		{ID: 36, Name: "delete_supplier", Description: "Delete Supplier"},
 	}
 
 	for _, module := range modules {
@@ -107,6 +111,10 @@ func SeedData(db *gorm.DB) {
 		{RoleID: role.ID, ModuleID: 30, ModuleName: "create_warehouse"},
 		{RoleID: role.ID, ModuleID: 31, ModuleName: "update_warehouse"},
 		{RoleID: role.ID, ModuleID: 32, ModuleName: "delete_warehouse"},
+		{RoleID: role.ID, ModuleID: 33, ModuleName: "get_supplier"},
+		{RoleID: role.ID, ModuleID: 34, ModuleName: "create_supplier"},
+		{RoleID: role.ID, ModuleID: 35, ModuleName: "update_supplier"},
+		{RoleID: role.ID, ModuleID: 36, ModuleName: "delete_supplier"},
 	}
 
 	for _, moduleRole := range moduleRoles {
