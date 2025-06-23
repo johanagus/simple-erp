@@ -7,6 +7,6 @@ type Module struct {
 	Name        string    `gorm:"type:varchar(100)" json:"name" validate:"required"`
 	Description string    `gorm:"type:text" json:"desc"`
 	Active      bool      `json:"active"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	CreatedAt   time.Time `json:"created_at" gorm:"<-:create"`
+	UpdatedAt   time.Time `json:"updated_at" gorm:"<-:update"`
 }
