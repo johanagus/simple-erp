@@ -22,11 +22,6 @@ func (h *ProductHandler) FindAll(c *fiber.Ctx) error {
 	if err != nil {
 		return response.Error(c, fiber.StatusNotFound, "product tidak di temukan", err)
 	}
-
-	if len(products) == 0 {
-		return response.Error(c, fiber.StatusNotFound, "product tidak di temukan", nil)
-	}
-
 	return response.Success(c, fiber.StatusOK, "berhasil mendapatkan data", products)
 }
 
