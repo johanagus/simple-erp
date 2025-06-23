@@ -14,7 +14,7 @@ type UserService interface {
 	FindByID(id int) (domain.User, error)
 	FindByEmail(email string) (domain.User, error)
 	SaveUser(user *domain.User) error
-	UpdateUser(user *domain.User) error
+	UpdateUser(id int, user *domain.User) error
 }
 
 type userServiceImpl struct {
@@ -72,8 +72,8 @@ func (s *userServiceImpl) SaveUser(user *domain.User) error {
 
 }
 
-func (s *userServiceImpl) UpdateUser(user *domain.User) error {
-	err := s.repo.UpdateUser(user)
+func (s *userServiceImpl) UpdateUser(id int, user *domain.User) error {
+	err := s.repo.UpdateUser(id, user)
 	if err != nil {
 		return errors.New("gagal memperbarui user")
 	}

@@ -10,7 +10,7 @@ type UserRepository interface {
 	FindByID(id int) (domain.User, error)
 	FindByEmail(email string) (domain.User, error)
 	SaveUser(user *domain.User) error
-	UpdateUser(user *domain.User) error
+	UpdateUser(id int, user *domain.User) error
 }
 
 type userRepositoryImpl struct {
@@ -44,7 +44,7 @@ func (repo *userRepositoryImpl) SaveUser(user *domain.User) error {
 	return result.Error
 }
 
-func (repo *userRepositoryImpl) UpdateUser(user *domain.User) error {
-	result := repo.db.Save(user)
+func (repo *userRepositoryImpl) UpdateUser(id int, user *domain.User) error {
+	result := repo.db.Where("id = ?", id).Updates(user)
 	return result.Error
 }
