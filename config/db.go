@@ -54,6 +54,7 @@ func InitDB() *gorm.DB {
 		&domain.Module{},
 		&domain.Role{},
 		&domain.ModuleRole{},
+		&domain.Store{},
 	)
 
 	// konfigurasi koneksi pool
