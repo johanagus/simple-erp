@@ -16,7 +16,7 @@ func RequirePermission(permission string) fiber.Handler {
 
 		// Check if user has the required permission
 		if !hasPermission(c, permission) {
-			return response.Error(c, fiber.StatusForbidden, "Access denied", errors.New("Access forbidden: insufficient permissions"))
+			return response.Error(c, fiber.StatusForbidden, "Access denied", errors.New("you do not have permission to access this resource"))
 		}
 
 		return c.Next()
