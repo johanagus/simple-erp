@@ -47,6 +47,10 @@ func main() {
 	storeService := service.NewStoreService(storeRepo)
 	storeHandler := handler.NewStoreHandler(storeService)
 
+	customerRepo := repository.NewCustomerRepository(DB)
+	customerService := service.NewCustomerService(customerRepo)
+	customerHandler := handler.NewCustomerHandler(customerService)
+
 	app.Use(middleware.Logger())
 
 	// Register routes
@@ -57,6 +61,7 @@ func main() {
 		WarehouseHandler: warehouseHandler,
 		SupplierHandler:  supplierHandler,
 		StoreHandler:     storeHandler,
+		CustomerHandler:  customerHandler,
 	})
 
 	app.Listen(":8000")
