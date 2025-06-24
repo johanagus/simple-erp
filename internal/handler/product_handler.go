@@ -22,6 +22,11 @@ func (h *ProductHandler) FindAll(c *fiber.Ctx) error {
 	if err != nil {
 		return response.Error(c, fiber.StatusNotFound, "product tidak di temukan", err)
 	}
+
+	if len(products) == 0 {
+		return response.Error(c, fiber.StatusNotFound, "product tidak di temukan", nil)
+	}
+
 	return response.Success(c, fiber.StatusOK, "berhasil mendapatkan data", products)
 }
 
@@ -80,5 +85,17 @@ func (h *ProductHandler) SaveProduct(c *fiber.Ctx) error {
 }
 
 func (h *ProductHandler) UpdateProduct(c *fiber.Ctx) error {
+	id, _ := strconv.Atoi(c.Params("id"))
+	product := &domain.Product{}
+	err := c.BodyParser(&product)
+	if err != nil {
+		return response.Error(c, fiber.StatusBadRequest, "bad request", err.Error())
+	}
+
+	_, err = h.service.UpdateProduct(id, product)
+	if err != nil {
+		return response.Error(c, fiber.StatusInternalServerError, "failed to update product", err.Error())
+	}
+
 	return response.Success(c, fiber.StatusOK, "product berhasil di update", nil)
 }

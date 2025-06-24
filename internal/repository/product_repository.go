@@ -12,7 +12,7 @@ type ProductRepository interface {
 	FindBySKU(sku string) (*domain.Product, error)
 	Search(query string) ([]domain.Product, error)
 	SaveProduct(product *domain.Product) (int, error)
-	UpdateProduct(product *domain.Product) (*domain.Product, error)
+	UpdateProduct(id int, product *domain.Product) (*domain.Product, error)
 }
 
 type productRepositoryImpl struct {
@@ -59,7 +59,7 @@ func (repo *productRepositoryImpl) SaveProduct(product *domain.Product) (int, er
 	return int(id), result.Error
 }
 
-func (repo *productRepositoryImpl) UpdateProduct(product *domain.Product) (*domain.Product, error) {
-	result := repo.DB.Save(product)
+func (repo *productRepositoryImpl) UpdateProduct(id int, product *domain.Product) (*domain.Product, error) {
+	result := repo.DB.Where("id = ?", id).Updates(product)
 	return product, result.Error
 }

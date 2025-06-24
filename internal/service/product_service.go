@@ -14,7 +14,7 @@ type ProductService interface {
 	FindByBarcode(barcode string) (*domain.Product, error)
 	Search(query string) ([]domain.Product, error)
 	SaveProduct(product *domain.Product) (int, error)
-	UpdateProduct(product *domain.Product) (*domain.Product, error)
+	UpdateProduct(id int, product *domain.Product) (*domain.Product, error)
 }
 
 type productServiceImpl struct {
@@ -26,7 +26,12 @@ func NewProductService(repo repository.ProductRepository) ProductService {
 }
 
 func (s *productServiceImpl) FindAll() ([]domain.Product, error) {
-	return s.repo.FindAll()
+	products, err := s.repo.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return products, nil
 }
 
 func (s *productServiceImpl) FindByID(id int) (*domain.Product, error) {
@@ -54,6 +59,6 @@ func (s *productServiceImpl) SaveProduct(product *domain.Product) (int, error) {
 	return s.repo.SaveProduct(product)
 }
 
-func (s *productServiceImpl) UpdateProduct(product *domain.Product) (*domain.Product, error) {
-	return s.repo.UpdateProduct(product)
+func (s *productServiceImpl) UpdateProduct(id int, product *domain.Product) (*domain.Product, error) {
+	return s.repo.UpdateProduct(id, product)
 }

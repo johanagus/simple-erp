@@ -13,5 +13,5 @@ func RegisterProductRoutes(router fiber.Router, h *handler.ProductHandler) {
 	router.Get("/product/barcode/:barcode", middleware.RequirePermission("get_product"), h.FindByBarcode)
 	router.Get("/products/search", middleware.RequirePermission("search_product"), h.Search)
 	router.Post("/product", middleware.RequirePermission("create_product"), h.SaveProduct)
-	router.Put("/product", middleware.RequirePermission("update_products"), h.UpdateProduct)
+	router.Put("/product/:id", middleware.RequirePermission("update_product"), h.UpdateProduct)
 }
