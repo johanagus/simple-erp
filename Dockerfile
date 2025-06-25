@@ -1,14 +1,17 @@
-# Start from the official Golang base image
-FROM golang:1.20-alpine
+FROM golang:tip-alpine3.21
 
 WORKDIR /app
 
+# Copy go.mod and go.sum
+COPY go.mod go.sum ./
+RUN apk update && apk upgrade --no-cache && go mod download
+
+# Copy seluruh source code ke dalam container
 COPY . .
 
-RUN go mod tidy
+# Build dari folder cmd
+RUN go build -o simple-erp ./cmd
 
-RUN go build -o simple-erp ./cmd/main.go
-
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["./simple-erp"]

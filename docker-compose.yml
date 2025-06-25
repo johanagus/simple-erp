@@ -4,17 +4,38 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "8080:8000"
     env_file:
       - .env
     depends_on:
       - db
+    networks:
+      - backend
 
   db:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: erp_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: simple-erp
     ports:
       - "3306:3306"
+    networks:
+      - backend
+
+      # create cludflare tunnel
+
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    ports:
+      - "4040:4040"
+    env_file:
+      - .env
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - backend
+
+networks:
+  backend:
+
