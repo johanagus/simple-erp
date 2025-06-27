@@ -23,6 +23,10 @@ func (h *CustomerHandler) FindAll(c *fiber.Ctx) error {
 		return response.Error(c, fiber.StatusNotFound, "customer tidak di temukan", err)
 	}
 
+	if len(*customers) == 0 {
+		return response.Error(c, fiber.StatusNotFound, "customer tidak di temukan", nil)
+	}
+
 	return response.Success(c, fiber.StatusOK, "berhasil mendapatkan data", customers)
 }
 
