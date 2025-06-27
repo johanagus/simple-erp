@@ -26,7 +26,11 @@ func (s *storeServiceImpl) GetAll() (*[]domain.Store, error) {
 }
 
 func (s *storeServiceImpl) FindByID(id int) (*domain.Store, error) {
-	return s.repo.FindByID(id), nil
+	store, err := s.repo.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return store, nil
 }
 
 func (s *storeServiceImpl) Create(store *domain.Store) (*domain.Store, error) {

@@ -7,7 +7,7 @@ import (
 
 type StoreRepository interface {
 	FindAll() *[]domain.Store
-	FindByID(id int) *domain.Store
+	FindByID(id int) (*domain.Store, error)
 	CreateStore(store *domain.Store) (*domain.Store, error)
 	UpdateStore(id int, store *domain.Store) (*domain.Store, error)
 	DeleteStore(id int) (bool, error)
@@ -27,10 +27,10 @@ func (repo *storeRepositoryImpl) FindAll() *[]domain.Store {
 	return &stores
 }
 
-func (repo *storeRepositoryImpl) FindByID(id int) *domain.Store {
+func (repo *storeRepositoryImpl) FindByID(id int) (*domain.Store, error) {
 	var store domain.Store
-	repo.db.Where("id = ?", id).First(&store)
-	return &store
+	result := repo.db.Where("id = ?", id).First(&store)
+	return &store, result.Error
 }
 
 func (repo *storeRepositoryImpl) CreateStore(store *domain.Store) (*domain.Store, error) {

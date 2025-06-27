@@ -36,6 +36,7 @@ func (h *StoreHandler) FindByID(c *fiber.Ctx) error {
 	if err != nil {
 		return response.Error(c, fiber.StatusNotFound, "store id : "+strconv.Itoa(id)+" is not found", err.Error())
 	}
+
 	return response.Success(c, fiber.StatusOK, "store id di temukan", store)
 }
 
