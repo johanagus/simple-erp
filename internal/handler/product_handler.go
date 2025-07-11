@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/johanagus/simple-erp/internal/domain"
+	"github.com/johanagus/simple-erp/internal/dto"
 	"github.com/johanagus/simple-erp/internal/service"
 	"github.com/johanagus/simple-erp/pkg/response"
 )
@@ -67,7 +68,7 @@ func (h *ProductHandler) Search(c *fiber.Ctx) error {
 }
 
 func (h *ProductHandler) SaveProduct(c *fiber.Ctx) error {
-	var product *domain.Product
+	var product *dto.ProductRequest
 	err := c.BodyParser(&product)
 	if err != nil {
 		return response.Error(c, fiber.StatusBadRequest, "bad request", err.Error())
@@ -78,6 +79,11 @@ func (h *ProductHandler) SaveProduct(c *fiber.Ctx) error {
 		if err.Error() == "sku already exists" {
 			return response.Error(c, fiber.StatusBadRequest, "sku already exists", err.Error())
 		}
+
+		if err.Error() == "category not found" {
+			return response.Error(c, fiber.StatusBadRequest, "category not found", err.Error())
+		}
+
 		return response.Error(c, fiber.StatusInternalServerError, "failed to save product", err.Error())
 	}
 

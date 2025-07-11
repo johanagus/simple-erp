@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"strconv"
+
 	"github.com/johanagus/simple-erp/internal/domain"
 	"gorm.io/gorm"
 )
@@ -13,6 +15,7 @@ type ProductRepository interface {
 	Search(query string) ([]domain.Product, error)
 	SaveProduct(product *domain.Product) (int, error)
 	UpdateProduct(id int, product *domain.Product) (*domain.Product, error)
+	FindLastSKUByCategoryAndPeriod(year, month int, categoryID int) string
 }
 
 type productRepositoryImpl struct {
@@ -25,7 +28,7 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 
 func (repo *productRepositoryImpl) FindAll() ([]domain.Product, error) {
 	var products []domain.Product
-	result := repo.DB.Find(&products)
+	result := repo.DB.Select("*").Find(&products).InnerJoins("category")
 	return products, result.Error
 }
 
@@ -62,4 +65,10 @@ func (repo *productRepositoryImpl) SaveProduct(product *domain.Product) (int, er
 func (repo *productRepositoryImpl) UpdateProduct(id int, product *domain.Product) (*domain.Product, error) {
 	result := repo.DB.Where("id = ?", id).Updates(product)
 	return product, result.Error
+}
+
+func (repo *productRepositoryImpl) FindLastSKUByCategoryAndPeriod(year, month int, categoryID int) string {
+	var skuID int
+	repo.DB.Raw("SELECT sku FROM products WHERE category_id = ? AND MONTH(created_at) = ? AND YEAR(created_at) = ? ORDER BY id DESC LIMIT 1", categoryID, month, year).Scan(&skuID)
+	return strconv.Itoa(skuID)
 }
