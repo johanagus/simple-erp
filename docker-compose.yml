@@ -35,15 +35,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  cloudflare-tunnel:
-    image: cloudflare/cloudflared:latest
-    restart: always
-    environment:
-      CLOUDFLARE_TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-    networks:
-      - backend
-
 networks:
   backend:
 
