@@ -5,8 +5,16 @@ services:
     build: .
     ports:
       - "8080:8000"
-    env_file:
-      - .env
+   environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      EXPIRED_JWT_TOKEN: ${EXPIRED_JWT_TOKEN}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      EXPIRED_JWT_REFRESH_TOKEN: ${EXPIRED_JWT_REFRESH_TOKEN}
     depends_on:
       - db
     networks:
