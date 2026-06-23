@@ -5,7 +5,7 @@ services:
     build: .
     ports:
       - "8080:8000"
-   environment:
+    environment:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
@@ -20,7 +20,7 @@ services:
     networks:
       - backend
     volumes:
-      - app_data:/app   # gunakan volume docker
+      - app_data:/app
 
   db:
     image: mysql:8
@@ -38,14 +38,11 @@ services:
   cloudflare-tunnel:
     image: cloudflare/cloudflared:latest
     restart: always
-    ports:
-      - "4040:4040"
-    env_file:
-      - .env
+    environment:
+      CLOUDFLARE_TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
     networks:
       - backend
-    
 
 networks:
   backend:
