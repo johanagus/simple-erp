@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	_ "github.com/golang-jwt/jwt/v5"
 	"github.com/johanagus/simple-erp/config"
 	"github.com/johanagus/simple-erp/internal/handler"
@@ -31,8 +32,9 @@ func main() {
 	userService := service.NewUserService(userRepo)
 	userHandler := handler.NewUserHandler(userService)
 
+	categoryRepo := repository.NewCategoryRepository(DB)
 	productRepo := repository.NewProductRepository(DB)
-	productService := service.NewProductService(productRepo)
+	productService := service.NewProductService(productRepo, categoryRepo)
 	productHandler := handler.NewProductHandler(productService)
 
 	warehouseRepo := repository.NewWarehouseRepository(DB)
@@ -52,6 +54,11 @@ func main() {
 	customerHandler := handler.NewCustomerHandler(customerService)
 
 	app.Use(middleware.Logger())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:3000", // frontend origin
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
+	}))
 
 	// Register routes
 	routes.RegisterRoutes(app, routes.RouteConfig{
